@@ -1,8 +1,30 @@
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
 #include <iostream>
+#include "bot.hpp"
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        puts("this doesnt work");
+        return 1;
+    }
+
+    if (!IsAdbAvailable()) {
+        Error("adb was not found!");
+    }
+
+    if (!IsDeviceConnected()) {
+        Error("no device connected!");
+    }
+
+    PrintAdbDevice();
+
+    CreateScreenshot();
+
+    return 0;
+}
+
+int _main() {
     Pix *img = pixRead("screen.png");
     img = pixConvertRGBToGrayFast(img);
     img = pixInvert(nullptr, img);
@@ -40,10 +62,10 @@ int main() {
             if (conf > 50.0f) {
                 printf("%10s\t%.2f\tBB: [%5d, %5d, %5d, %5d]\n",
                        word, conf, x1, y1, x2, y2);
-               BOX *b = boxCreate(x1, y1, x2 - x1, y2 - y1);
-               pixRenderBoxBlend(output, b, 3, 0xff, col % 128, col % 128, 0.5f);
-               boxDestroy(&b);
-               col++;
+                BOX *b = boxCreate(x1, y1, x2 - x1, y2 - y1);
+                pixRenderBoxBlend(output, b, 3, 0xff, col % 128, col % 128, 0.5f);
+                boxDestroy(&b);
+                col++;
             }
             delete[] word;
         } while (ri->Next(level));
