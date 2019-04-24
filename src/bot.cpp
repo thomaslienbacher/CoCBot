@@ -18,14 +18,14 @@ bool IsAdbAvailable() {
 }
 
 void PrintAdbDevice() {
-    HANDLE read = nullptr;
-    HANDLE write = nullptr;
+    FILE *output;
     //RunCommandOutput("adb devices -l", &read, &write);
-    RunCommandOutput("CoCBot.exe", &read, &write);
+    RunCommandOutput("CoCBot.exe", &output);
 
     char buffer[256];
-    fread(buffer, sizeof(char), 255, _popen("CoCBot.exe", "r"));
+    fread(buffer, sizeof(char), 255, output);
     std::cout << ": " << std::string(buffer) << std::endl;
+    fclose(output);
 }
 
 void CreateScreenshot() {
@@ -37,79 +37,25 @@ bool IsDeviceConnected() {
     return RunCommand("adb get-state") == 0;
 }
 
-int RunCommandOutput(const std::string &&cmd, HANDLE *readStdout, HANDLE *writeStdout) {
-    SECURITY_ATTRIBUTES sa;
-    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-    sa.bInheritHandle = TRUE;
-    sa.lpSecurityDescriptor = nullptr;
+int RunCommandOutput(const std::string &&cmd, FILE **output) {
+    *output = popen(cmd.c_str(), "r");
 
-    CreatePipe(readStdout, writeStdout, &sa, 0);
-    SetHandleInformation(*readStdout, HANDLE_FLAG_INHERIT, 0);
-
-    STARTUPINFO si;
-    PROCESS_INFORMATION pi;
-
-    ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    si.hStdOutput = writeStdout;
-    si.hStdError = writeStdout;
-    si.dwFlags |= STARTF_USESTDHANDLES;
-    ZeroMemory(&pi, sizeof(pi));
-
-    if (!CreateProcessA(nullptr,
-                        const_cast<char *>(cmd.c_str()),
-                        nullptr,
-                        nullptr,
-                        TRUE,
-                        0,
-                        nullptr,
-                        nullptr,
-                        &si,
-                        &pi)
-            ) {
+    if (!*output) {
         Error("couldn't start command: '" + cmd + "'!");
     }
 
-    WaitForSingleObject(pi.hProcess, INFINITE);
-
-    DWORD ret;
-    GetExitCodeProcess(pi.hProcess, &ret);
-
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
+    int ret;
+    printf("cwait: %d\n", cwait(&ret, 0, 0));
 
     return ret;
 }
 
 int RunCommand(const std::string &&cmd) {
-    STARTUPINFO si;
-    PROCESS_INFORMATION pi;
+    FILE *output = popen(cmd.c_str(), "r");
 
-    ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    ZeroMemory(&pi, sizeof(pi));
-
-    if (!CreateProcessA(nullptr,
-                        const_cast<char *>(cmd.c_str()),
-                        nullptr,
-                        nullptr,
-                        FALSE,
-                        CREATE_NO_WINDOW,
-                        nullptr,
-                        nullptr,
-                        &si,
-                        &pi)
-            ) {
+    if (!output) {
         Error("couldn't start command: '" + cmd + "'!");
     }
 
-    WaitForSingleObject(pi.hProcess, INFINITE);
-
-    DWORD ret;
-    GetExitCodeProcess(pi.hProcess, &ret);
-
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
-
-    return ret;
+    return pclose(output);
 }

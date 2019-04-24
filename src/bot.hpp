@@ -18,7 +18,7 @@ void PrintAdbDevice();
 
 void CreateScreenshot();
 
-int RunCommandOutput(const std::string &&cmd, HANDLE *readStdout, HANDLE *writeStdout);
+int RunCommandOutput(const std::string &&cmd, FILE **output);
 
 int RunCommand(const std::string &&cmd);
 
