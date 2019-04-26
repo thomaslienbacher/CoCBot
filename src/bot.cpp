@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+
 Bot::Bot() {
 
 }
@@ -21,6 +22,7 @@ bool Bot::process() {
 
     return true;
 }
+
 
 void Bot::requestBaseCenter() {
     std::cout << "Please center your base and zoom out:" << std::endl;

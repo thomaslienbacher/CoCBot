@@ -51,6 +51,7 @@
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
+
             </state>
           </provider>
         </entry>
@@ -58,6 +59,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/device.cpp">
           <provider selected="true" editor-type-id="text-editor">
+
             <state relative-caret-position="18">
               <caret line="33" column="39" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
               <folding>
@@ -84,6 +86,33 @@
               <folding>
                 <element signature="e#54#72#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://C:/msys64/mingw64/x86_64-w64-mingw32/include/process.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="298">
+              <caret line="159" column="43" selection-start-line="159" selection-start-column="43" selection-end-line="159" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://C:/msys64/mingw64/x86_64-w64-mingw32/include/corecrt.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="298">
+              <caret line="61" column="29" lean-forward="true" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://C:/msys64/mingw64/x86_64-w64-mingw32/include/_mingw.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="298">
+              <caret line="238" column="8" selection-start-line="238" selection-start-column="8" selection-end-line="238" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -132,6 +161,8 @@
         <option value="$PROJECT_DIR$/src/device.cpp" />
         <option value="$PROJECT_DIR$/src/bot.hpp" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
+        <option value="$PROJECT_DIR$/src/bot.hpp" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/bot.cpp" />
       </list>
     </option>
