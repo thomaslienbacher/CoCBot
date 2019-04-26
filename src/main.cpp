@@ -1,13 +1,14 @@
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
 #include <iostream>
+#include "device.hpp"
+#include "util.hpp"
 #include "bot.hpp"
+#include <windows.h>
+#include <io.h>
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        puts("this doesnt work");
-        return 1;
-    }
+    PrintTitle();
 
     if (!IsAdbAvailable()) {
         Error("adb was not found!");
@@ -19,7 +20,26 @@ int main(int argc, char *argv[]) {
 
     PrintAdbDevice();
 
-    CreateScreenshot();
+    if (DeviceUnlockedAndAwake()) {
+        StartCoC();
+    } else {
+        Error("please unlock device!");
+    }
+
+    Bot bot;
+    bot.requestBaseCenter();
+
+    while (true) {
+        if (DeviceUnlockedAndAwake()) {
+            CreateScreenshot();
+        } else {
+            Error("please unlock device!");
+        }
+
+        if (!bot.process()) {
+            Error("bot couldn't process screenshot!");
+        }
+    }
 
     return 0;
 }

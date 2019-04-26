@@ -1,25 +1,30 @@
 //
-// Created by Thomas Lienbacher on 23.04.2019.
+// Created by Thomas Lienbacher on 25.04.2019.
 //
 
 #ifndef COCBOT_BOT_HPP
 #define COCBOT_BOT_HPP
 
-#include <string>
-#include <windows.h>
 
-void Error(const std::string &&msg) __attribute__((noreturn));
+class Bot {
 
-bool IsAdbAvailable();
+public:
+    Bot();
 
-bool IsDeviceConnected();
+    ~Bot();
 
-void PrintAdbDevice();
+    Bot(const Bot &other) = delete;
 
-void CreateScreenshot();
+    Bot(Bot &&other) noexcept = delete;
 
-int RunCommandOutput(const std::string &&cmd, FILE **output);
+    Bot &operator=(const Bot &other) = delete;
 
-int RunCommand(const std::string &&cmd);
+    Bot &operator=(Bot &&other) noexcept = delete;
+
+    bool process();
+
+    void requestBaseCenter();
+};
+
 
 #endif //COCBOT_BOT_HPP

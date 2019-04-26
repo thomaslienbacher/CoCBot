@@ -1,61 +1,39 @@
 //
-// Created by Thomas Lienbacher on 23.04.2019.
+// Created by Thomas Lienbacher on 25.04.2019.
 //
 
 #include "bot.hpp"
 
-#include <cstdlib>
 #include <iostream>
-#include <windows.h>
 
-void Error(const std::string &&msg) {
-    std::cerr << "Error: " << msg << std::endl;
-    exit(1);
+
+Bot::Bot() {
+
 }
 
-bool IsAdbAvailable() {
-    return RunCommand("adb --version") == 0;
+Bot::~Bot() {
+
 }
 
-void PrintAdbDevice() {
-    FILE *output;
-    //RunCommandOutput("adb devices -l", &read, &write);
-    RunCommandOutput("CoCBot.exe", &output);
+bool Bot::process() {
+    std::cout << "Processing screenshot..." << std::endl;
 
-    char buffer[256];
-    fread(buffer, sizeof(char), 255, output);
-    std::cout << ": " << std::string(buffer) << std::endl;
-    fclose(output);
+    //do work
+
+    return true;
 }
 
-void CreateScreenshot() {
-    RunCommand("adb shell screencap -p /sdcard/screen.png");
-    RunCommand("adb pull /sdcard/screen.png");
-}
 
-bool IsDeviceConnected() {
-    return RunCommand("adb get-state") == 0;
-}
+void Bot::requestBaseCenter() {
+    std::cout << "Please center your base and zoom out:" << std::endl;
+    std::string input;
 
-int RunCommandOutput(const std::string &&cmd, FILE **output) {
-    *output = popen(cmd.c_str(), "r");
+    while (true) {
+        std::cout << "  OK? [y/Y] > ";
+        std::cin >> input;
 
-    if (!*output) {
-        Error("couldn't start command: '" + cmd + "'!");
+        if (input == "y" || input == "Y") {
+            break;
+        }
     }
-
-    int ret;
-    printf("cwait: %d\n", cwait(&ret, 0, 0));
-
-    return ret;
-}
-
-int RunCommand(const std::string &&cmd) {
-    FILE *output = popen(cmd.c_str(), "r");
-
-    if (!output) {
-        Error("couldn't start command: '" + cmd + "'!");
-    }
-
-    return pclose(output);
 }
