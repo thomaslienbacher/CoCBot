@@ -5,8 +5,22 @@
 #ifndef COCBOT_BOT_HPP
 #define COCBOT_BOT_HPP
 
+#include <opencv2/opencv.hpp>
 
 class Bot {
+    cv::Mat screen;
+
+    std::vector<cv::Rect> findImageMatches(cv::Mat &ref, cv::Mat &tpl);
+
+    bool openTrainTroops();
+
+    bool switchFastTab();
+
+    bool trainTroops();
+
+    bool collectResources();
+
+    void captureScreen();
 
 public:
     Bot();

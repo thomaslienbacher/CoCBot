@@ -6,8 +6,15 @@
 #include "bot.hpp"
 #include <windows.h>
 #include <io.h>
+#include <opencv2/opencv.hpp>
+
+int opencv_main();
+
+int tesseract_main();
 
 int main(int argc, char *argv[]) {
+    //return opencv_main();
+
     PrintTitle();
 
     if (!IsAdbAvailable()) {
@@ -30,21 +37,62 @@ int main(int argc, char *argv[]) {
     bot.requestBaseCenter();
 
     while (true) {
-        if (DeviceUnlockedAndAwake()) {
-            CreateScreenshot();
-        } else {
-            Error("please unlock device!");
-        }
-
         if (!bot.process()) {
-            Error("bot couldn't process screenshot!");
+            std::cerr << "Error: bot couldn't correctly process screenshot, retrying..." << std::endl;
         }
     }
 
     return 0;
 }
 
-int _main() {
+int opencv_main() {
+    cv::Mat ref = cv::imread("screen.png");
+    cv::resize(ref, ref, {1920, 1080});
+
+    cv::Mat tpl = cv::imread("train_green.png");
+    if (ref.empty() || tpl.empty()) {
+        std::cout << "Error reading file(s)!" << std::endl;
+        return -1;
+    }
+
+    //cv::imshow("screen", ref);
+    //cv::imshow("troops", tpl);
+
+    cv::Mat res_32f(ref.rows - tpl.rows + 1, ref.cols - tpl.cols + 1, CV_32FC1);
+    cv::matchTemplate(ref, tpl, res_32f, cv::TM_CCOEFF_NORMED);
+
+    cv::Mat res;
+    res_32f.convertTo(res, CV_8U, 255.0);
+    cv::imshow("result", res);
+
+    int size = ((tpl.cols + tpl.rows) / 4) * 2 + 1; //force size to be odd
+    //cv::adaptiveThreshold(res, res, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C , cv::THRESH_BINARY, size, -128);
+    cv::threshold(res, res, 240.0, 255.0, cv::THRESH_TOZERO);
+    cv::adaptiveThreshold(res, res, 240, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, size, -128);
+    cv::imshow("result_thresh", res);
+
+    while (true) {
+        double minval, maxval, threshold = 0.9;
+        cv::Point minloc, maxloc;
+        cv::minMaxLoc(res, &minval, &maxval, &minloc, &maxloc);
+
+        if (maxval >= threshold * 255) {
+            cv::rectangle(ref, maxloc, cv::Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows), CV_RGB(0, 10, 255), 2);
+            cv::floodFill(res, maxloc, 0); //mark drawn blob
+            std::cout << maxval << " " << cv::Rect(maxloc, cv::Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows))
+                      << std::endl;
+        } else
+            break;
+    }
+
+    cv::imshow("final", ref);
+    cv::waitKey(0);
+
+    return 0;
+}
+
+
+int tesseract_main() {
     Pix *img = pixRead("screen.png");
     img = pixConvertRGBToGrayFast(img);
     img = pixInvert(nullptr, img);

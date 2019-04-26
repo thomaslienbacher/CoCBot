@@ -166,3 +166,8 @@ bool DeviceUnlockedAndAwake() {
     return awake && !showingLockscreen && !showingDream && !dreamingLockscreen;
 }
 
+void TapDevice(int x, int y) {
+    std::cout << "Tap at: " << x << " " << y << std::endl;
+    RunCommand("adb shell input tap " + std::to_string(x) + " " + std::to_string(y));
+}
+

@@ -23,5 +23,7 @@ void StartCoC();
 
 bool DeviceUnlockedAndAwake();
 
+void TapDevice(int x, int y);
+
 
 #endif //COCBOT_DEVICE_HPP
