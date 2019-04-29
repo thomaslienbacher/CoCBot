@@ -7,16 +7,19 @@
 #include "util.hpp"
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 
 bool Bot::process() {
     captureScreen();
-    goto __fast;
 
     if (openTrainTroops()) {
         captureScreen();
 
         if (switchFastTab()) {
+            captureScreen();
+
             if (!trainTroops()) {
                 std::cerr << "couldn't train any troops!" << std::endl;
             }
@@ -39,7 +42,6 @@ bool Bot::process() {
 
         if (checkIfTrained()) {
             if (closeTrainTab()) {
-                __fast:
                 captureScreen();
 
                 if (findEnemy()) {
@@ -55,6 +57,9 @@ bool Bot::process() {
                 std::cerr << "couldn't close train tab!" << std::endl;
             }
         } else {
+            if (!closeTrainTab()) {
+                std::cerr << "couldn't close train tab!" << std::endl;
+            }
             std::cerr << "troops aren't ready to fight!" << std::endl;
         }
     } else {
@@ -163,8 +168,8 @@ bool Bot::trainTroops() {
 
 bool Bot::collectResources() {
     //gold
-    cv::Mat collectGold = cv::imread("collect_gold.png");
-    auto matches = findImageMatches(screen, collectGold, 190);
+    auto mat = cv::imread("collect_gold.png");
+    auto matches = findImageMatches(screen, mat, 190);
 
     if (!matches.empty()) {
         TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
@@ -173,8 +178,8 @@ bool Bot::collectResources() {
     }
 
     //elixir
-    cv::Mat collectElixir = cv::imread("collect_elixir.png");
-    matches = findImageMatches(screen, collectElixir, 190);
+    mat = cv::imread("collect_elixir.png");
+    matches = findImageMatches(screen, mat, 190);
 
     if (!matches.empty()) {
         TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
@@ -183,8 +188,8 @@ bool Bot::collectResources() {
     }
 
     //dark elixir
-    cv::Mat collectDarkElixir = cv::imread("collect_dark_elixir.png");
-    matches = findImageMatches(screen, collectDarkElixir, 190);
+    mat = cv::imread("collect_dark_elixir.png");
+    matches = findImageMatches(screen, mat, 190);
 
     if (!matches.empty()) {
         TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
@@ -210,24 +215,26 @@ bool Bot::closeTrainTab() {
 
 bool Bot::checkIfTrained() {
     auto mat = cv::imread("troops_ready.png");
-    auto matches = findImageMatches(screen, mat, 220);
+    auto matches = findImageMatches(screen, mat, 233);
 
     if (matches.empty()) {
         return false;
     }
 
     mat = cv::imread("spells_ready.png");
-    matches = findImageMatches(screen, mat, 220);
+    matches = findImageMatches(screen, mat, 222);
 
     if (matches.empty()) {
-        return false;
+        std::cerr << "spells not ready, ignoring..." << std::endl;
+        //return false;
     }
 
-    mat = cv::imread("heros_ready.png");
-    matches = findImageMatches(screen, mat, 220);
+    mat = cv::imread("heroes_ready.png");
+    matches = findImageMatches(screen, mat, 222);
 
     if (matches.empty()) {
-        return false;
+        std::cerr << "heroes not ready, ignoring..." << std::endl;
+        //return false;
     }
 
     return true;
@@ -270,20 +277,33 @@ bool Bot::attack() {
     std::cout << "enemy found" << std::endl;
 
     mat = cv::imread("select_combat.png");
-    matches = findImageMatches(screen, mat, 180);
+    matches = findImageMatches(screen, mat, 185);
 
     std::sort(matches.begin(), matches.end(), [](cv::Rect &a, cv::Rect &b) -> bool {
         return a.x > b.x;
     });
+
+    std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(5000));
+    std::cout << "starting attack..." << std::endl;
 
     for (auto &r: matches) {
         if (r.y > 1000) {
             TapDevice(r.x + r.width / 2, r.y + r.height / 2);
             TapDevice(420, 200);
             TapDevice(420, 200);
-            SwipeDevice(420, 200, 420, 200, 2500);
+            SwipeDevice(420, 200, 420, 200, 6000);
         }
     }
+
+    mat = cv::imread("back_home.png");
+
+    do {
+        captureScreen();
+        matches = findImageMatches(screen, mat, 180);
+        std::cout << "still attacking" << std::endl;
+    } while (matches.empty());
+
+    TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
 
     return true;
 }

@@ -46,12 +46,12 @@ int main(int argc, char *argv[]) {
 }
 
 int opencv_main() {
-    double threshold = 190;
+    double threshold = 230;
 
     cv::Mat ref = cv::imread("screen.png");
     cv::resize(ref, ref, {1920, 1080});
 
-    cv::Mat tpl = cv::imread("select_combat.png");
+    cv::Mat tpl = cv::imread("troops_ready.png");
     if (ref.empty() || tpl.empty()) {
         std::cout << "Error reading file(s)!" << std::endl;
         return -1;

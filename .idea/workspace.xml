@@ -14,12 +14,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b03957f4-a74d-4a8c-b2b2-c3a4ca0e7b6c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screen.png" beforeDir="false" afterPath="$PROJECT_DIR$/screen.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bot.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/bot.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bot.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/bot.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/device.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/device.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/util.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/cmake-build-release/" />
@@ -38,7 +35,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
+            <state relative-caret-position="162">
               <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
@@ -50,8 +47,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/bot.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="282" column="32" lean-forward="true" selection-start-line="282" selection-start-column="32" selection-end-line="282" selection-end-column="32" />
+            <state relative-caret-position="476">
+              <caret line="293" column="46" selection-start-line="293" selection-start-column="46" selection-end-line="293" selection-end-column="46" />
               <folding>
                 <element signature="e#54#72#0" expanded="true" />
               </folding>
@@ -62,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/bot.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
+            <state relative-caret-position="364">
+              <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -71,8 +68,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/device.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="182" column="1" lean-forward="true" selection-start-line="182" selection-start-column="1" selection-end-line="182" selection-end-column="1" />
+            <state relative-caret-position="3276">
+              <caret line="182" column="1" selection-start-line="182" selection-start-column="1" selection-end-line="182" selection-end-column="1" />
               <folding>
                 <element signature="e#54#75#0" expanded="true" />
               </folding>
@@ -83,7 +80,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/device.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
+            <state relative-caret-position="486">
               <caret line="27" column="62" selection-start-line="27" selection-start-column="62" selection-end-line="27" selection-end-column="62" />
             </state>
           </provider>
@@ -137,9 +134,9 @@
         <option value="$PROJECT_DIR$/src/util.cpp" />
         <option value="$PROJECT_DIR$/src/bot.hpp" />
         <option value="$PROJECT_DIR$/src/bot.hpp" />
-        <option value="$PROJECT_DIR$/src/main.cpp" />
         <option value="$PROJECT_DIR$/src/device.hpp" />
         <option value="$PROJECT_DIR$/src/device.cpp" />
+        <option value="$PROJECT_DIR$/src/main.cpp" />
         <option value="$PROJECT_DIR$/src/bot.cpp" />
       </list>
     </option>
@@ -158,7 +155,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -180,6 +176,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -231,9 +228,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1988273" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20095949" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -284,8 +280,6 @@
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/output_12.png" />
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/output_10.png" />
     <entry file="file://$PROJECT_DIR$/cmake-build-debug/output_8.png" />
     <entry file="file://$PROJECT_DIR$/cmake-build-debug/output_6.png" />
     <entry file="file://C:/msys64/mingw64/include/leptonica/pix.h">
@@ -502,9 +496,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/screen.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://C:/msys64/mingw64/include/opencv4/opencv2/core/types.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2564">
@@ -529,10 +520,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/util.hpp">
+    <entry file="file://$PROJECT_DIR$/src/device.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="3276">
+          <caret line="182" column="1" selection-start-line="182" selection-start-column="1" selection-end-line="182" selection-end-column="1" />
+          <folding>
+            <element signature="e#54#75#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/device.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" column="62" selection-start-line="27" selection-start-column="62" selection-end-line="27" selection-end-column="62" />
         </state>
       </provider>
     </entry>
@@ -546,33 +547,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/device.hpp">
+    <entry file="file://$PROJECT_DIR$/src/util.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="27" column="62" selection-start-line="27" selection-start-column="62" selection-end-line="27" selection-end-column="62" />
+        <state relative-caret-position="216">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/device.cpp">
+    <entry file="file://C:/msys64/mingw64/include/opencv4/opencv2/core/mat.inl.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="182" column="1" lean-forward="true" selection-start-line="182" selection-start-column="1" selection-end-line="182" selection-end-column="1" />
-          <folding>
-            <element signature="e#54#75#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-144">
+          <caret line="1404" column="19" selection-start-line="1404" selection-start-column="19" selection-end-line="1404" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/bot.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/troops_ready.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/screen.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
+        <state relative-caret-position="162">
           <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
           <folding>
             <element signature="e#0#30#0" expanded="true" />
@@ -580,10 +577,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/bot.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/bot.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="282" column="32" lean-forward="true" selection-start-line="282" selection-start-column="32" selection-end-line="282" selection-end-column="32" />
+        <state relative-caret-position="476">
+          <caret line="293" column="46" selection-start-line="293" selection-start-column="46" selection-end-line="293" selection-end-column="46" />
           <folding>
             <element signature="e#54#72#0" expanded="true" />
           </folding>
