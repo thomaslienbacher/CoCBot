@@ -46,10 +46,12 @@ int main(int argc, char *argv[]) {
 }
 
 int opencv_main() {
+    double threshold = 190;
+
     cv::Mat ref = cv::imread("screen.png");
     cv::resize(ref, ref, {1920, 1080});
 
-    cv::Mat tpl = cv::imread("train_green.png");
+    cv::Mat tpl = cv::imread("select_combat.png");
     if (ref.empty() || tpl.empty()) {
         std::cout << "Error reading file(s)!" << std::endl;
         return -1;
@@ -67,16 +69,16 @@ int opencv_main() {
 
     int size = ((tpl.cols + tpl.rows) / 4) * 2 + 1; //force size to be odd
     //cv::adaptiveThreshold(res, res, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C , cv::THRESH_BINARY, size, -128);
-    cv::threshold(res, res, 240.0, 255.0, cv::THRESH_TOZERO);
-    cv::adaptiveThreshold(res, res, 240, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, size, -128);
+    cv::threshold(res, res, threshold, 255.0, cv::THRESH_TOZERO);
+    cv::adaptiveThreshold(res, res, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, size, -128);
     cv::imshow("result_thresh", res);
 
     while (true) {
-        double minval, maxval, threshold = 0.9;
+        double minval, maxval;
         cv::Point minloc, maxloc;
         cv::minMaxLoc(res, &minval, &maxval, &minloc, &maxloc);
 
-        if (maxval >= threshold * 255) {
+        if (maxval == 255) {
             cv::rectangle(ref, maxloc, cv::Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows), CV_RGB(0, 10, 255), 2);
             cv::floodFill(res, maxloc, 0); //mark drawn blob
             std::cout << maxval << " " << cv::Rect(maxloc, cv::Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows))

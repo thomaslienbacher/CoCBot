@@ -11,7 +11,7 @@ void Error(const std::string &&msg) {
 }
 
 void PrintTitle() {
-    std::cout << "Clash of Clans Bot\n";
+    std::cout << "Computer Assistet Clash of Clans\n";
     std::cout << "by Thomas Lienbacher\n";
     std::cout << "built on: " << std::string(__TIMESTAMP__) << "\n";
     std::cout << std::endl;

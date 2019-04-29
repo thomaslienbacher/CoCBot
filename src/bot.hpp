@@ -10,7 +10,7 @@
 class Bot {
     cv::Mat screen;
 
-    std::vector<cv::Rect> findImageMatches(cv::Mat &ref, cv::Mat &tpl);
+    std::vector<cv::Rect> findImageMatches(cv::Mat &ref, cv::Mat &tpl, double threshold = 240);
 
     bool openTrainTroops();
 
@@ -18,14 +18,22 @@ class Bot {
 
     bool trainTroops();
 
+    bool closeTrainTab();
+
     bool collectResources();
+
+    bool checkIfTrained();
+
+    bool findEnemy();
+
+    bool attack();
 
     void captureScreen();
 
 public:
-    Bot();
+    Bot() = default;
 
-    ~Bot();
+    ~Bot() = default;
 
     Bot(const Bot &other) = delete;
 

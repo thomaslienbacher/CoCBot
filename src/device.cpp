@@ -171,3 +171,14 @@ void TapDevice(int x, int y) {
     RunCommand("adb shell input tap " + std::to_string(x) + " " + std::to_string(y));
 }
 
+void SwipeDevice(int x1, int y1, int x2, int y2, int ms) {
+    std::cout << "Swipe from: " << x1 << " " << y2
+              << " to " << x2 << " " << y2 << " for " << ms << "ms" << std::endl;
+    RunCommand("adb shell input touchscreen swipe "
+               + std::to_string(x1) + " "
+               + std::to_string(y1) + " "
+               + std::to_string(x2) + " "
+               + std::to_string(y2) + " "
+               + std::to_string(ms));
+}
+

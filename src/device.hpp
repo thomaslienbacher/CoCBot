@@ -25,5 +25,7 @@ bool DeviceUnlockedAndAwake();
 
 void TapDevice(int x, int y);
 
+void SwipeDevice(int x1, int y1, int x2, int y2, int ms = 1000);
+
 
 #endif //COCBOT_DEVICE_HPP

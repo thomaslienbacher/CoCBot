@@ -9,25 +9,56 @@
 #include <iostream>
 
 
-Bot::Bot() {
-
-}
-
-Bot::~Bot() {
-
-}
-
 bool Bot::process() {
-    if (!openTrainTroops()) {
+    captureScreen();
+    goto __fast;
+
+    if (openTrainTroops()) {
+        captureScreen();
+
+        if (switchFastTab()) {
+            if (!trainTroops()) {
+                std::cerr << "couldn't train any troops!" << std::endl;
+            }
+
+            if (!closeTrainTab()) {
+                std::cerr << "couldn't close train tab!" << std::endl;
+            }
+        } else {
+            std::cerr << "couldn't switch to fast tab!" << std::endl;
+        }
+    } else {
         std::cerr << "couldn't open train troops!" << std::endl;
     }
 
-    if (!switchFastTab()) {
-        std::cerr << "couldn't switch to fast tab!" << std::endl;
-    }
+    captureScreen();
+    collectResources();
 
-    if (!trainTroops()) {
-        std::cerr << "couldn't train any troops!" << std::endl;
+    if (openTrainTroops()) {
+        captureScreen();
+
+        if (checkIfTrained()) {
+            if (closeTrainTab()) {
+                __fast:
+                captureScreen();
+
+                if (findEnemy()) {
+                    captureScreen();
+
+                    if (!attack()) {
+                        std::cerr << "failed to attack enemy!" << std::endl;
+                    }
+                } else {
+                    std::cerr << "couldn't find enemy!" << std::endl;
+                }
+            } else {
+                std::cerr << "couldn't close train tab!" << std::endl;
+            }
+        } else {
+            std::cerr << "troops aren't ready to fight!" << std::endl;
+        }
+    } else {
+        std::cerr << "couldn't open train troops!" << std::endl;
     }
 
     return true;
@@ -48,7 +79,7 @@ void Bot::requestBaseCenter() {
     }
 }
 
-std::vector<cv::Rect> Bot::findImageMatches(cv::Mat &ref, cv::Mat &tpl) {
+std::vector<cv::Rect> Bot::findImageMatches(cv::Mat &ref, cv::Mat &tpl, double threshold) {
     std::vector<cv::Rect> rects;
 
     cv::Mat res_32f(ref.rows - tpl.rows + 1, ref.cols - tpl.cols + 1, CV_32FC1);
@@ -58,15 +89,15 @@ std::vector<cv::Rect> Bot::findImageMatches(cv::Mat &ref, cv::Mat &tpl) {
     res_32f.convertTo(res, CV_8U, 255.0);
 
     int size = ((tpl.cols + tpl.rows) / 4) * 2 + 1; //force size to be odd
-    cv::threshold(res, res, 240.0, 255.0, cv::THRESH_TOZERO);
-    cv::adaptiveThreshold(res, res, 240, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, size, -128);
+    cv::threshold(res, res, threshold, 255.0, cv::THRESH_TOZERO);
+    cv::adaptiveThreshold(res, res, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, size, -128);
 
     while (true) {
-        double minval, maxval, threshold = 0.85;
+        double minval, maxval;
         cv::Point minloc, maxloc;
         cv::minMaxLoc(res, &minval, &maxval, &minloc, &maxloc);
 
-        if (maxval >= threshold * 255) {
+        if (maxval == 255) {
             rects.emplace_back(cv::Rect(maxloc, cv::Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows)));
             cv::floodFill(res, maxloc, 0);
         } else
@@ -77,9 +108,8 @@ std::vector<cv::Rect> Bot::findImageMatches(cv::Mat &ref, cv::Mat &tpl) {
 }
 
 bool Bot::openTrainTroops() {
-    captureScreen();
     cv::Mat trainTroops = cv::imread("train_troops.png");
-    auto matches = findImageMatches(screen, trainTroops);
+    auto matches = findImageMatches(screen, trainTroops, 240);
 
     if (matches.empty()) {
         return false;
@@ -91,9 +121,8 @@ bool Bot::openTrainTroops() {
 }
 
 bool Bot::switchFastTab() {
-    captureScreen();
     cv::Mat fastTrainTab = cv::imread("fast_train_tab.png");
-    auto matches = findImageMatches(screen, fastTrainTab);
+    auto matches = findImageMatches(screen, fastTrainTab, 0);
 
     if (matches.empty()) {
         return false;
@@ -116,9 +145,8 @@ void Bot::captureScreen() {
 }
 
 bool Bot::trainTroops() {
-    captureScreen();
     cv::Mat trainGreen = cv::imread("train_green.png");
-    auto matches = findImageMatches(screen, trainGreen);
+    auto matches = findImageMatches(screen, trainGreen, 240);
 
     if (matches.empty()) {
         return false;
@@ -134,9 +162,128 @@ bool Bot::trainTroops() {
 }
 
 bool Bot::collectResources() {
+    //gold
+    cv::Mat collectGold = cv::imread("collect_gold.png");
+    auto matches = findImageMatches(screen, collectGold, 190);
+
+    if (!matches.empty()) {
+        TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
+    } else {
+        std::cerr << "couldn't collect any gold!" << std::endl;
+    }
+
+    //elixir
+    cv::Mat collectElixir = cv::imread("collect_elixir.png");
+    matches = findImageMatches(screen, collectElixir, 190);
+
+    if (!matches.empty()) {
+        TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
+    } else {
+        std::cerr << "couldn't collect any elixir!" << std::endl;
+    }
+
+    //dark elixir
+    cv::Mat collectDarkElixir = cv::imread("collect_dark_elixir.png");
+    matches = findImageMatches(screen, collectDarkElixir, 190);
+
+    if (!matches.empty()) {
+        TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
+    } else {
+        std::cerr << "couldn't collect any dark elixir!" << std::endl;
+    }
+
+    return true;
+}
+
+bool Bot::closeTrainTab() {
+    cv::Mat trainGreen = cv::imread("close.png");
+    auto matches = findImageMatches(screen, trainGreen, 200);
+
+    if (matches.empty()) {
+        return false;
+    }
+
+    TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
+
+    return true;
+}
+
+bool Bot::checkIfTrained() {
+    auto mat = cv::imread("troops_ready.png");
+    auto matches = findImageMatches(screen, mat, 220);
+
+    if (matches.empty()) {
+        return false;
+    }
+
+    mat = cv::imread("spells_ready.png");
+    matches = findImageMatches(screen, mat, 220);
+
+    if (matches.empty()) {
+        return false;
+    }
+
+    mat = cv::imread("heros_ready.png");
+    matches = findImageMatches(screen, mat, 220);
+
+    if (matches.empty()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Bot::findEnemy() {
+    auto mat = cv::imread("attack.png");
+    auto matches = findImageMatches(screen, mat, 220);
+
+    if (matches.empty()) {
+        return false;
+    }
+
+    TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
+
     captureScreen();
 
-    //todo
+    mat = cv::imread("find_fight.png");
+    matches = findImageMatches(screen, mat, 220);
 
-    return false;
+    if (matches.empty()) {
+        return false;
+    }
+
+    TapDevice(matches[0].x + matches[0].width / 2, matches[0].y + matches[0].height / 2);
+
+    return true;
+}
+
+bool Bot::attack() {
+    auto mat = cv::imread("end_fight.png");
+    auto matches = findImageMatches(screen, mat, 180);
+
+    while (matches.empty()) {
+        captureScreen();
+        matches = findImageMatches(screen, mat, 180);
+        std::cout << "no enemy found" << std::endl;
+    }
+
+    std::cout << "enemy found" << std::endl;
+
+    mat = cv::imread("select_combat.png");
+    matches = findImageMatches(screen, mat, 180);
+
+    std::sort(matches.begin(), matches.end(), [](cv::Rect &a, cv::Rect &b) -> bool {
+        return a.x > b.x;
+    });
+
+    for (auto &r: matches) {
+        if (r.y > 1000) {
+            TapDevice(r.x + r.width / 2, r.y + r.height / 2);
+            TapDevice(420, 200);
+            TapDevice(420, 200);
+            SwipeDevice(420, 200, 420, 200, 2500);
+        }
+    }
+
+    return true;
 }
